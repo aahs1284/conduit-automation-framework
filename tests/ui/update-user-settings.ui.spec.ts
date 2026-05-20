@@ -8,7 +8,7 @@ test.describe('Update user settings - UI Tests', () => {
 
         const loginPage = new LoginPage(page);
 
-        const email = 'ajra17050505@gmail.com';
+        const email = 'ajra.email.testing@gmail.com';
         const password = 'MmnF695217+';
 
         await loginPage.goto();
@@ -23,7 +23,7 @@ test.describe('Update user settings - UI Tests', () => {
 
         const updatedBio = 'This is updated bio';
 
-        const updatedImageUrl = 'https://api.realworld.io/images/demo-avatar.png';
+        const updatedImageUrl = 'https://someurl.com';
 
         await settingsPage.gotoSettings();
 

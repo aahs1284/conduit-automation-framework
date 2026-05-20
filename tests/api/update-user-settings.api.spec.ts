@@ -4,7 +4,7 @@ test.describe('Manage user profile - API Tests', () => {
 
     test('User should be able to update user settings via API', async ({ request }) => {
 
-        const email = 'ajra17050505@gmail.com'
+        const email = 'ajra.email.testing@gmail.com'
 
         const password = 'MmnF695217+';
 
@@ -28,11 +28,10 @@ test.describe('Manage user profile - API Tests', () => {
 
         const updatedUsername = 'ajra' + Date.now();
 
-        const updatedBio = 'This is updated bio';
+        const updatedBio = 'This is my updated bio';
 
         const updatedImageUrl = 'https://someURL.com';
 
-        // Šaljemo PUT request za update user settings
         const updateUserResponse = await request.put(
             'https://conduit-api.bondaracademy.com/api/user',
             {
@@ -52,22 +51,13 @@ test.describe('Manage user profile - API Tests', () => {
             }
         )
 
-        // Provjeravamo da je update uspješan
         expect(updateUserResponse.status()).toBe(200);
 
-        // Pretvaramo update response u JSON
         const updateUserResponseJson = await updateUserResponse.json();
 
-        // Provjeravamo da je username updateovan
         expect(updateUserResponseJson.user.username).toBe(updatedUsername);
-
-        // Provjeravamo da je bio updateovan
         expect(updateUserResponseJson.user.bio).toBe(updatedBio);
-
-        // Provjeravamo da je image updateovan
         expect(updateUserResponseJson.user.image).toBe(updatedImageUrl);
-
-        // Provjeravamo da email ostaje isti
         expect(updateUserResponseJson.user.email).toBe(email);
     })
 })

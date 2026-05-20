@@ -6,7 +6,7 @@ test.describe('Unfavorite article - UI Tests', () => {
 
         const loginPage = new LoginPage(page);
 
-        const email = 'ajra17050505@gmail.com'
+        const email = 'ajra.email.testing@gmail.com'
         const password = 'MmnF695217+';
 
         await loginPage.goto();
@@ -22,7 +22,7 @@ test.describe('Unfavorite article - UI Tests', () => {
 
         await unfavoriteButton.click();
 
-        await expect(unfavoriteButton).not.toHaveClass(/btn-primary/);
+        await expect(unfavoriteButton).not.toHaveClass('btn-primary');
 
         await page.waitForTimeout(3000);
     });

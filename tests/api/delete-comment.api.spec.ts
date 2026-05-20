@@ -4,13 +4,9 @@ test.describe('Delete comment - API Tests', () => {
 
     test('User can delete comment from article', async ({ request }) => {
 
-        // Definišemo email korisnika za login
         const email = 'ajra.email.testing@gmail.com'
-
-        // Definišemo password korisnika za login
         const password = 'MmnF695217+';
 
-        // Šaljemo login request da dobijemo token
         const responseLogin = await request.post('https://conduit-api.bondaracademy.com/api/users/login', {
             data: {
                 user: {
@@ -20,19 +16,14 @@ test.describe('Delete comment - API Tests', () => {
             }
         })
 
-        // Provjeravamo da je login uspješan
         expect(responseLogin.status()).toBe(200);
 
-        // Pretvaramo login response u JSON
         const responseLoginJson = await responseLogin.json();
 
-        // Iz login response-a uzimamo token
         const token = responseLoginJson.user.token;
 
-        // Šaljemo GET request da dohvatimo listu svih articles
         const articlesResponse = await request.get('https://conduit-api.bondaracademy.com/api/articles');
 
-        // Provjeravamo da je GET articles request uspješan
         expect(articlesResponse.status()).toBe(200);
 
         const articlesResponseJson = await articlesResponse.json();
@@ -70,12 +61,6 @@ test.describe('Delete comment - API Tests', () => {
                 }
             }
         )
-
-        // Provjeravamo da je komentar uspješno obrisan
         expect(deleteCommentResponse.status()).toBe(200);
-
-
-
-
-        })
+    })
 })

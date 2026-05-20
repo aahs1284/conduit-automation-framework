@@ -7,7 +7,7 @@ test.describe('Comment article - UI Tests', () => {
 
         const loginPage = new LoginPage(page);
 
-        const email = 'ajra17050505@gmail.com'
+        const email = 'ajra.email.testing@gmail.com'
         const password = 'MmnF695217+';
 
         await loginPage.goto();
@@ -15,7 +15,7 @@ test.describe('Comment article - UI Tests', () => {
         await loginPage.login(email, password);
         await page.waitForTimeout(3000);
 
-        const username = 'ajra17050505';
+        const username = 'aahs1284';
 
         const myFirstArticle = page.locator('div.article-preview').filter({
             has: page.locator('.author', { hasText: username })

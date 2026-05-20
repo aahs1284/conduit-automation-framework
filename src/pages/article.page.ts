@@ -17,7 +17,7 @@ export class ArticlePage {
 
     constructor(page: Page) {
         this.page = page;
-        this.newArticleButton=page.locator('a:has-text("New Article")');
+        this.newArticleButton = page.locator('a.nav-link:has-text("New Article")');; //note to self: imaju articles koji se zovu new article pa ne moze naci a/link
         this.articleTitleInput = page.locator('input[placeholder="Article Title"]');
         this.articleDescriptionInput = page.locator(`input[placeholder="What's this article about?"]`);
         this.articleBodyInput = page.locator('textarea[placeholder="Write your article (in markdown)"]');

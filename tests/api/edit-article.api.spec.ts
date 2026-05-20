@@ -1,7 +1,6 @@
 import test, { expect } from "@playwright/test"
 
 test.describe('Edit article - API Tests', () => {
-
     test('User can edit an article', async ({ request }) => {
 
         const email = 'ajra.email.testing@gmail.com'

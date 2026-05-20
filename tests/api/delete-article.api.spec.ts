@@ -20,8 +20,9 @@ test.describe('Create an article - API Tests', () => {
 
         const responseLoginJson = await responseLogin.json();
         const token = responseLoginJson.user.token;
-
-        const articleTitle = 'Test-Article-17904-53475';
+        
+        //note: hardcoded value, edit before running tests
+        const articleTitle = 'NOVI-article-title-1779265681749-53475';
 
         const response = await request.delete('https://conduit-api.bondaracademy.com/api/articles/' + articleTitle, {
             headers: {
@@ -30,7 +31,5 @@ test.describe('Create an article - API Tests', () => {
         })
 
         expect(response.status()).toBe(204);
-
-        
     })
 })

@@ -6,10 +6,9 @@ test.describe('Create an article UI Tests', () => {
     test('User should be able to create an article', async ({ page }) => {
         const loginPage = new LoginPage(page);
 
-        const email = 'ajra17050505@gmail.com'
+        const email = 'ajra.email.testing@gmail.com'
         const password = 'MmnF695217+';
 
-        //pozivamo akcije iz klase login page
         await loginPage.goto();
 
         await loginPage.login(email, password);

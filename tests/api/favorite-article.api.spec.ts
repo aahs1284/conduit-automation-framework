@@ -1,7 +1,6 @@
 import test, { expect } from "@playwright/test"
 
 test.describe('Favorite article - API Tests', () => {
-
     test('User can add article to favorites', async ({ request }) => {
 
         const email = 'ajra.email.testing@gmail.com'
@@ -22,7 +21,6 @@ test.describe('Favorite article - API Tests', () => {
         expect(responseLogin.status()).toBe(200);
 
         const responseLoginJson = await responseLogin.json();
-
         const token = responseLoginJson.user.token;
 
         const articlesResponse = await request.get(
@@ -32,9 +30,7 @@ test.describe('Favorite article - API Tests', () => {
         expect(articlesResponse.status()).toBe(200);
 
         const articlesResponseJson = await articlesResponse.json();
-
         const myFirstArticle = articlesResponseJson.articles[0];
-
         const myFirstArticlePath = myFirstArticle.slug;
 
         const favoriteArticleResponse = await request.post(

@@ -31,11 +31,8 @@ test.describe('Comment article - API Tests', () => {
         expect(articlesResponse.status()).toBe(200);
 
         const articlesResponseJson = await articlesResponse.json();
-
         const myFirstApiArticle = articlesResponseJson.articles[0];
-
         const myFirstApiArticleIdentifier = myFirstApiArticle.slug;
-
         const commentBody = 'This is my API test comment ' + Date.now();
 
         const commentResponse = await request.post(

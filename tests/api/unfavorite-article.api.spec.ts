@@ -5,7 +5,6 @@ test.describe('Unfavorite article - API Tests', () => {
     test('User can remove article from favorites', async ({ request }) => {
 
         const email = 'ajra.email.testing@gmail.com'
-
         const password = 'MmnF695217+';
 
         const responseLogin = await request.post(
@@ -23,7 +22,6 @@ test.describe('Unfavorite article - API Tests', () => {
         expect(responseLogin.status()).toBe(200);
 
         const responseLoginJson = await responseLogin.json();
-
         const token = responseLoginJson.user.token;
 
         const articlesResponse = await request.get(
