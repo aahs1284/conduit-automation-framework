@@ -1,3 +1,4 @@
+<<<<<<< HEAD
  Conduit Playwright Tests
 
 Automatizovani UI i API testing projekat baziran na:
@@ -345,3 +346,4 @@ Glavni cilj ovog projekta je omogućiti:
 * reusable komponente
 * lako održavanje automation testova
 * jednostavno proširenje projekta u budućnosti
+=======
