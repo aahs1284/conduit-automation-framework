@@ -1,28 +1,19 @@
-import test from "@playwright/test"
-import { LoginPage } from "../../src/pages/login.page"
-import { SettingsPage } from "../../src/pages/settings.page"
+import { test } from '../../fixtures/pages.fixture';
 
 test.describe('Update user settings - UI Tests', () => {
 
-    test('User should be able to update user settings', async ({ page }) => {
+    test('User should be able to update user settings', async ({ loginPage, settingsPage }) => {
 
-        const loginPage = new LoginPage(page);
-
-        const email = 'ajra.email.testing@gmail.com';
-        const password = 'MmnF695217+';
+        const email = process.env.TEST_EMAIL!;
+        const password = process.env.TEST_PASSWORD!;
 
         await loginPage.goto();
 
         await loginPage.login(email, password);
-
-        await page.waitForTimeout(1000);
-
-        const settingsPage = new SettingsPage(page);
+        await loginPage.verifySuccessfulLogin();
 
         const updatedUsername = 'ajra' + Date.now();
-
         const updatedBio = 'This is updated bio';
-
         const updatedImageUrl = 'https://someurl.com';
 
         await settingsPage.gotoSettings();
@@ -37,6 +28,5 @@ test.describe('Update user settings - UI Tests', () => {
 
         await settingsPage.verifyUpdatedUsername(updatedUsername);
 
-        await page.waitForTimeout(3000);
     });
 })

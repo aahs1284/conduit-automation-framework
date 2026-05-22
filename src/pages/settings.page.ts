@@ -41,7 +41,7 @@ export class SettingsPage {
     async verifyUpdatedUsername(username: string) {
 
         await expect(
-            this.page.locator('.user-info')
+            this.page.locator('.user-info h4')
         ).toContainText(username);
     }
 }

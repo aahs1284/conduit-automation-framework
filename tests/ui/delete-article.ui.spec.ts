@@ -1,17 +1,15 @@
-import test from "@playwright/test"
-import { LoginPage } from "../../src/pages/login.page"
+import { test, expect } from '../../fixtures/pages.fixture';
 
 test.describe('Delete article - UI Tests', () => { 
-    test('User should be able to delete the article', async ({ page }) => {
-        const loginPage = new LoginPage(page);
+    test('User should be able to delete the article', async ({ loginPage, articlePage, page }) => {
 
-        const email = 'ajra.email.testing@gmail.com'
-        const password = 'MmnF695217+';
+        const email = process.env.TEST_EMAIL!;
+        const password = process.env.TEST_PASSWORD!;
 
         await loginPage.goto();
 
         await loginPage.login(email, password);
-        await page.waitForTimeout(3000)
+        await loginPage.verifySuccessfulLogin();
 
         const username = 'aahs1284';
         const myFirstArticle = page.locator('div.article-preview').filter({
@@ -19,11 +17,9 @@ test.describe('Delete article - UI Tests', () => {
         }).first();
 
         await myFirstArticle.locator('h1').click();
-
-        const deleteBtn = page.locator('.btn:has-text("Delete Article")').first();
-        deleteBtn.click();
-
-        await page.waitForTimeout(3000)
+        await articlePage.deleteArticle();
+        
+        await expect(page).toHaveURL('/');
     });
     
 })

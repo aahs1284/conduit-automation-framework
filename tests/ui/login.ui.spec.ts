@@ -1,17 +1,15 @@
-import test from "@playwright/test"
-import { LoginPage } from "../../src/pages/login.page"
+import { test, expect } from '../../fixtures/pages.fixture';
 
 test.describe('SignIn UI Tests', () => { 
-    test('User should sign in successfully', async ({ page }) => {
-        const loginPage = new LoginPage(page);
+    test('User should sign in successfully', async ({ loginPage }) => {
 
-        const email = 'ajra.email.testing@gmail.com'
-        const password = 'MmnF695217+';
+        const email = process.env.TEST_EMAIL!;
+        const password = process.env.TEST_PASSWORD!;
 
-        //pozivamo akcije iz klase login page
         await loginPage.goto();
 
         await loginPage.login(email, password);
-        await page.waitForTimeout(3000)
+    await loginPage.verifySuccessfulLogin();
+    
     })
 })

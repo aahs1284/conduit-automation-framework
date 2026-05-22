@@ -1,14 +1,10 @@
-import test from "@playwright/test"
-import { LoginPage } from "../../src/pages/login.page"
-import { ArticlePage } from "../../src/pages/article.page"
+import { test, expect } from '../../fixtures/pages.fixture';
 
 test.describe('Comment article - UI Tests', () => { 
-    test('User should be able to add comment on article', async ({ page }) => {
+    test('User should be able to add comment on article', async ({ loginPage, page, commentPage }) => {
 
-        const loginPage = new LoginPage(page);
-
-        const email = 'ajra.email.testing@gmail.com'
-        const password = 'MmnF695217+';
+        const email = process.env.TEST_EMAIL!;
+        const password = process.env.TEST_PASSWORD!;
 
         await loginPage.goto();
 
@@ -23,17 +19,13 @@ test.describe('Comment article - UI Tests', () => {
 
         await myFirstArticle.locator('h1').click();
 
-        const articlePage = new ArticlePage(page);
-
         const comment = 'This is my test comment ' + Date.now();
 
-        await articlePage.addComment(comment);
-        await articlePage.verifyComment(comment);
-        await articlePage.deleteComment();
-        await articlePage.verifyCommentDeleted(comment);
+        await commentPage.addComment(comment);
+        await commentPage.verifyComment(comment);
+        await commentPage.deleteComment();
+        await commentPage.verifyCommentDeleted(comment);
 
-
-        await page.waitForTimeout(3000);
     });
     
 })

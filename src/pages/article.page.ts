@@ -10,9 +10,8 @@ export class ArticlePage {
     readonly articleTagInput: Locator
     readonly publishArticleButton: Locator;
     readonly editArticleButton: Locator;
-    readonly commentInput: Locator;
-    readonly postCommentButton: Locator;
-    readonly deleteCommentButton: Locator;
+    readonly favoriteButton: Locator;
+    readonly unfavoriteButton: Locator;
     
 
     constructor(page: Page) {
@@ -24,14 +23,13 @@ export class ArticlePage {
         this.articleTagInput = page.locator('input[placeholder="Enter tags"]');
         this.publishArticleButton = page.locator('button:has-text("Publish Article")');
         this.editArticleButton = page.locator('.btn:has-text("Edit Article")').first();
-        this.commentInput = page.locator('textarea[placeholder="Write a comment..."]');
-        this.postCommentButton = page.locator('button:has-text("Post Comment")');
-        this.deleteCommentButton = page.locator('.mod-options i.ion-trash-a').first();
-    }
+        this.favoriteButton = page.locator('div.article-preview button').first();
+        this.unfavoriteButton = page.locator('div.article-preview button').first();
+    };
 
     async gotoNewArticle() {
         await this.newArticleButton.click();
-    }
+    };
 
     async createNewArticle(articleTitle: string, articleDescription: string, articleBody: string, articleTag: string) {
         await this.articleTitleInput.fill(articleTitle);
@@ -40,13 +38,13 @@ export class ArticlePage {
         await this.articleTagInput.fill(articleTag);
         await this.publishArticleButton.click();
 
-    }
+    };
 
     async verifySuccess(articleTitle: string) {
         await expect(
             this.page.locator(`h1:has-text("${articleTitle}")`)
         ).toBeVisible();
-    }
+    };
 
     async editArticle(articleTitle:string, articleDescription:string, articleBody:string, articleTag:string) {
         await this.editArticleButton.click();
@@ -57,32 +55,39 @@ export class ArticlePage {
         await this.articleTagInput.fill(articleTag);
 
         await this.publishArticleButton.click();
-    }
+    };
 
     async verifySuccessUpdatedArticle(updatedArticleTitle: string) {
         await expect(
             this.page.locator(`h1:has-text("${updatedArticleTitle}")`)
         ).toBeVisible();
+    };
+
+    async deleteArticle() {
+        await this.page
+            .locator('.btn:has-text("Delete Article")')
+            .first()
+            .click();
+    };
+
+    async favoriteArticle() {
+        await this.favoriteButton.click();
     }
 
-    async addComment(comment: string) {
-        await this.commentInput.fill(comment);
-        await this.postCommentButton.click();
-    }
+    async verifyArticleFavorited() {
 
-    async verifyComment(comment: string) {
-        await expect(
-            this.page.locator('.card-text', { hasText: comment })
-        ).toBeVisible();
-    }
-
-    async deleteComment() {
-        await this.deleteCommentButton.click();
-    }
-
-    async verifyCommentDeleted(comment: string) {
-        await expect(
-           this.page.locator('.card-text', { hasText: comment })
-    ).not.toBeVisible();
+    await expect(this.favoriteButton)
+        .toHaveClass(/btn-primary/);
 }
+
+    async unfavoriteArticle() {
+        await this.unfavoriteButton.click();
+    }
+
+    async verifyArticleUnfavorited() {
+
+    await expect(this.unfavoriteButton)
+        .toHaveClass(/btn-outline-primary/);
+    }
+    
 }
