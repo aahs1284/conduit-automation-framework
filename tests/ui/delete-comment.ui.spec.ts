@@ -1,31 +1,27 @@
-import { test, expect } from '../../fixtures/pages.fixture';
+import { test } from '../../fixtures/pages.fixture';
+import articleData from '../../test-data/article.json';
+import commentData from '../../test-data/comment.json';
 
-test.describe('Comment article - UI Tests', () => { 
-    test('User should be able to add comment on article', async ({ loginPage, page, commentPage }) => {
+test.describe('Comment article - UI Tests', () => {
 
-        const email = process.env.TEST_EMAIL!;
-        const password = process.env.TEST_PASSWORD!;
-
-        await loginPage.goto();
-
-        await loginPage.login(email, password);
-        await page.waitForTimeout(3000);
-
-        const username = 'aahs1284';
+    test('User should be able to add and delete comment on article', async ({ page, commentPage }) => {
+        await page.goto('/');
 
         const myFirstArticle = page.locator('div.article-preview').filter({
-            has: page.locator('.author', { hasText: username })
+            has: page.locator('.author', {
+                hasText: articleData.authorUsername
+            })
         }).first();
 
         await myFirstArticle.locator('h1').click();
 
-        const comment = 'This is my test comment ' + Date.now();
+        const comment = `${commentData.commentPrefix} ${Date.now()}`;
 
         await commentPage.addComment(comment);
         await commentPage.verifyComment(comment);
+
         await commentPage.deleteComment();
         await commentPage.verifyCommentDeleted(comment);
-
     });
-    
-})
+
+});

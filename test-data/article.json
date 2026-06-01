@@ -1,0 +1,14 @@
+{
+  "description": "article description",
+  "body": "article body",
+  "tag": "articleTag1",
+
+ "updatedDescription": "Edited article description",
+  "updatedBody": "Edited article body 01",
+  "updatedTag": "EditedTag",
+
+  "authorUsername": "aahs1284",
+
+"apiDescription": "article description 17050625",
+  "apiBody": "article body body body"
+}

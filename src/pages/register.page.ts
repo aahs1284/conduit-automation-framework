@@ -3,23 +3,21 @@ import { expect, Locator, Page } from "@playwright/test";
 export class RegisterPage {
     readonly page: Page;
     readonly usernameInput: Locator;
-    readonly emailInput: Locator;   
+    readonly emailInput: Locator;
     readonly passwordInput: Locator;
     readonly signUpButton: Locator;
 
-    /**
-     *
-     */
     constructor(page: Page) {
         this.page = page;
-        this.usernameInput = page.locator('input[placeholder="Username"]');
-        this.emailInput = page.locator('input[placeholder="Email"]');
-        this.passwordInput = page.locator('input[placeholder="Password"]');
-        this.signUpButton = page.locator('button:has-text("Sign up")');  
+
+        this.usernameInput = page.getByPlaceholder('Username');
+        this.emailInput = page.getByPlaceholder('Email');
+        this.passwordInput = page.getByPlaceholder('Password');
+        this.signUpButton = page.getByRole('button', { name: 'Sign up' });
     }
 
     async goto() {
-        await this.page.goto('/register')
+        await this.page.goto('/register');
     }
 
     async register(username: string, email: string, password: string) {
@@ -31,7 +29,7 @@ export class RegisterPage {
 
     async verifySuccess(username: string) {
         await expect(
-            this.page.locator(`a.nav-link:has-text("${username}")`)
+            this.page.getByRole('link', { name: username })
         ).toBeVisible();
     }
 }

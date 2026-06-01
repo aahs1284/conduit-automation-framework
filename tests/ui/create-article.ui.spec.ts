@@ -1,24 +1,24 @@
 import { test } from '../../fixtures/pages.fixture';
+import articleData from '../../test-data/article.json';
 
-test.describe('Create an article UI Tests', () => { 
-    test('User should be able to create an article', async ({ loginPage,articlePage }) => {
+test.describe('Create an article UI Tests', () => {
 
-        const email = process.env.TEST_EMAIL!;
-        const password = process.env.TEST_PASSWORD!;
+    test('User should be able to create an article', async ({ page, articlePage }) => {
 
-        const articleTitle = 'article title ' + Date.now();
-        const articleDescription = 'article description';
-        const articleBody = 'article body';
-        const articleTag = 'articleTag1';
+        const articleTitle = 'article title ' + Date.now(); //ne bi trebao u json jer se svaki put generise novi/dinamicno
 
-        await loginPage.goto();
-
-        await loginPage.login(email, password);
-        await loginPage.verifySuccessfulLogin();
+        await page.goto('/');
 
         await articlePage.gotoNewArticle();
-        await articlePage.createNewArticle(articleTitle, articleDescription, articleBody, articleTag);
+
+        await articlePage.createNewArticle(
+            articleTitle,
+            articleData.description,
+            articleData.body,
+            articleData.tag
+        );
+
         await articlePage.verifySuccess(articleTitle);
     });
-    
-})
+
+});

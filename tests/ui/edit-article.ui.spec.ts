@@ -1,30 +1,28 @@
 import { test } from '../../fixtures/pages.fixture';
+import articleData from '../../test-data/article.json';
 
-test.describe('Edit article - UI Tests', () => { 
-    test('User should be able to edit the existing article', async ({ loginPage, articlePage, page }) => {
+test.describe('Edit article - UI Tests', () => {
 
-        const email = process.env.TEST_EMAIL!;
-        const password = process.env.TEST_PASSWORD!;
+    test('User should be able to edit the existing article', async ({ articlePage, page }) => {
 
-        await loginPage.goto();
+        await page.goto('/');
 
-        await loginPage.login(email, password);
-
-        const username = 'aahs1284';
         const myFirstArticle = page.locator('div.article-preview').filter({
-            has: page.locator('.author', {hasText: username})
+            has: page.locator('.author', { hasText: articleData.authorUsername })
         }).first();
 
         await myFirstArticle.locator('h1').click();
-        
-        const updatedArticleTitle = 'Edited article title ' + Date.now();
-        const updatedArticleDescription = 'Edited article description';
-        const updatedArticleBody = 'Edited article body 01';
-        const updatedArticleTag = 'EditedTag';
 
-        await articlePage.editArticle( updatedArticleTitle,updatedArticleDescription, updatedArticleBody, updatedArticleTag);
-        await articlePage.verifySuccessUpdatedArticle(updatedArticleTitle);
-        await page.waitForTimeout(3000)
+        const updatedArticleTitle = 'Edited article title ' + Date.now();
+
+        await articlePage.editArticle(
+            updatedArticleTitle,
+            articleData.updatedDescription,
+            articleData.updatedBody,
+            articleData.updatedTag
+        );
+
+        await articlePage.verifySuccessUpdatedArticle(articleData.updatedBody);
     });
-    
-})
+
+});

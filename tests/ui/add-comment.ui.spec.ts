@@ -1,27 +1,25 @@
 import { test } from '../../fixtures/pages.fixture';
+import articleData from '../../test-data/article.json';
+import commentData from '../../test-data/comment.json';
 
-test.describe('Comment article - UI Tests', () => { 
-    test('User should be able to add comment on article', async ({ loginPage, commentPage, page }) => {
+test.describe('Comment article - UI Tests', () => {
 
-        const email = process.env.TEST_EMAIL!;
-        const password = process.env.TEST_PASSWORD!;
+    test('User should be able to add comment on article', async ({ commentPage, page }) => {
 
-        await loginPage.goto();
-
-        await loginPage.login(email, password);
-
-        const username = 'aahs1284';
+        await page.goto('/');
 
         const myFirstArticle = page.locator('div.article-preview').filter({
-            has: page.locator('.author', { hasText: username })
+            has: page.locator('.author', {
+                hasText: articleData.authorUsername
+            })
         }).first();
 
         await myFirstArticle.locator('h1').click();
 
-        const comment = 'This is my test comment ' + Date.now();
+        const comment = `${commentData.commentPrefix} ${Date.now()}`;
 
         await commentPage.addComment(comment);
         await commentPage.verifyComment(comment);
     });
-    
-})
+
+});

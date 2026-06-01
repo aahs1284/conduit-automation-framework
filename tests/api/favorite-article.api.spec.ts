@@ -1,31 +1,9 @@
-import test, { expect } from "@playwright/test"
+import { test, expect } from '../../fixtures/api.fixtures';
 
 test.describe('Favorite article - API Tests', () => {
-    test('User can add article to favorites', async ({ request }) => {
+    test('User can add article to favorites', async ({ request, token }) => {
 
-        const email = 'ajra.email.testing@gmail.com'
-        const password = 'MmnF695217+';
-
-        const responseLogin = await request.post(
-            'https://conduit-api.bondaracademy.com/api/users/login',
-            {
-                data: {
-                    user: {
-                        email: email,
-                        password: password
-                    }
-                }
-            }
-        )
-
-        expect(responseLogin.status()).toBe(200);
-
-        const responseLoginJson = await responseLogin.json();
-        const token = responseLoginJson.user.token;
-
-        const articlesResponse = await request.get(
-            'https://conduit-api.bondaracademy.com/api/articles'
-        );
+        const articlesResponse = await request.get('articles');
 
         expect(articlesResponse.status()).toBe(200);
 
@@ -34,13 +12,13 @@ test.describe('Favorite article - API Tests', () => {
         const myFirstArticlePath = myFirstArticle.slug;
 
         const favoriteArticleResponse = await request.post(
-            `https://conduit-api.bondaracademy.com/api/articles/${myFirstArticlePath}/favorite`,
+            `articles/${myFirstArticlePath}/favorite`,
             {
                 headers: {
                     'Authorization': `Token ${token}`
                 }
             }
-        )
+        );
 
         expect(favoriteArticleResponse.status()).toBe(200);
 
@@ -48,6 +26,6 @@ test.describe('Favorite article - API Tests', () => {
 
         expect(favoriteArticleResponseJson.article.favorited).toBe(true);
 
-    })
+    });
 
-})
+});

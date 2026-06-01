@@ -1,21 +1,26 @@
-import test, { expect } from "@playwright/test"
+import test, { expect } from "@playwright/test";
 
 test.describe('Register API Tests', () => { 
     test('User should sign up successfully via API', async ({ request }) => {
-        const username = 'aahs1284registerAPI';
-        const email = 'ajra.email.testing.register1@gmail.com';
+        const uniqueId = Date.now();
+
+        const username = `user${uniqueId}`;
+        const email = `user${uniqueId}@gmail.com`;
         const password = 'MmnF695217+';
 
-        const response = await request.post('https://conduit-api.bondaracademy.com/api/users/login', {
-            data: {
-                user: {
-                    email: email,
-                    password: password,
-                    username: username,
+        const response = await request.post(
+            'https://conduit-api.bondaracademy.com/api/users',
+            {
+                data: {
+                    user: {
+                        username: username,
+                        email: email,
+                        password: password
+                    }
                 }
             }
-        })
+        );
 
-        expect(response.status()).toBe(200);
-    })
-})
+        expect(response.status()).toBe(201);
+    });
+});

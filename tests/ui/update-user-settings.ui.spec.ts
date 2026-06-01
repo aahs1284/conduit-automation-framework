@@ -1,32 +1,22 @@
 import { test } from '../../fixtures/pages.fixture';
+import settingsData from '../../test-data/settings.json';
 
 test.describe('Update user settings - UI Tests', () => {
 
-    test('User should be able to update user settings', async ({ loginPage, settingsPage }) => {
+    test('User should be able to update user settings', async ({ page, settingsPage }) => {
+        await page.goto('/');
 
-        const email = process.env.TEST_EMAIL!;
-        const password = process.env.TEST_PASSWORD!;
-
-        await loginPage.goto();
-
-        await loginPage.login(email, password);
-        await loginPage.verifySuccessfulLogin();
-
-        const updatedUsername = 'ajra' + Date.now();
-        const updatedBio = 'This is updated bio';
-        const updatedImageUrl = 'https://someurl.com';
+        const updatedUsername = settingsData.usernamePrefix + Date.now();
 
         await settingsPage.gotoSettings();
 
         await settingsPage.updateUserSettings(
             updatedUsername,
-            updatedBio,
-            updatedImageUrl,
-            email,
-            password
+            settingsData.bio,
+            settingsData.imageUrl
         );
 
         await settingsPage.verifyUpdatedUsername(updatedUsername);
-
     });
-})
+
+});

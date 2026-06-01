@@ -1,16 +1,17 @@
 import { test, expect } from '../../fixtures/pages.fixture';
 
 test.describe('SignUp UI Tests', () => {
+  test.use({ storageState: { cookies: [], origins: [] } });
 
-    test('User should sign up successfully', async ({ registerPage }) => {
+  test('User should sign up successfully', async ({ registerPage, page }) => {
+    await page.goto('/register');
 
-        const username = 'aahsRegister02';
-        const email = 'ajra-register02@gmail.com';
-        const password = 'MmnF695217+';
+    const username = 'user' + Date.now();
+    const email = `user${Date.now()}@test.com`;
+    const password = 'MmnF695217+';
 
-        await registerPage.goto();
+    await registerPage.register(username, email, password);
 
-        await registerPage.register(username, email, password);
-        await registerPage.verifySuccess(username);
-    });
+    await expect(page.getByRole('link', { name: 'New Article' })).toBeVisible();
+  });
 });

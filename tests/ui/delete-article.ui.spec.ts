@@ -1,25 +1,21 @@
 import { test, expect } from '../../fixtures/pages.fixture';
+import articleData from '../../test-data/article.json';
 
-test.describe('Delete article - UI Tests', () => { 
-    test('User should be able to delete the article', async ({ loginPage, articlePage, page }) => {
+test.describe('Delete article - UI Tests', () => {
 
-        const email = process.env.TEST_EMAIL!;
-        const password = process.env.TEST_PASSWORD!;
+    test('User should be able to delete the article', async ({ articlePage, page }) => {
 
-        await loginPage.goto();
+        await page.goto('/');
 
-        await loginPage.login(email, password);
-        await loginPage.verifySuccessfulLogin();
-
-        const username = 'aahs1284';
         const myFirstArticle = page.locator('div.article-preview').filter({
-            has: page.locator('.author', {hasText: username})
+            has: page.locator('.author', { hasText: articleData.authorUsername })
         }).first();
 
         await myFirstArticle.locator('h1').click();
+
         await articlePage.deleteArticle();
-        
+
         await expect(page).toHaveURL('/');
     });
-    
-})
+
+});

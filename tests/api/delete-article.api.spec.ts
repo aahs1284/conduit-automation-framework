@@ -1,35 +1,33 @@
-import test, { expect } from "@playwright/test"
+import { test, expect } from '../../fixtures/api.fixtures';
+import articleData from '../../test-data/article.json';
 
-test.describe('Create an article - API Tests', () => { 
-       
-    test('User can create an article', async ({ request }) => {
+test.describe('Delete article - API Tests', () => {
+  test('User can delete an article', async ({ request, token }) => {
 
-        const email = 'ajra.email.testing@gmail.com'
-        const password = 'MmnF695217+';
+    const articlesResponse = await request.get(
+      `articles?author=${articleData.authorUsername}`,
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      }
+    );
 
-        const responseLogin = await request.post('https://conduit-api.bondaracademy.com/api/users/login', {
-            data: {
-                user: {
-                    email: email,
-                    password: password
-                }
-            }
-        })
+    expect(articlesResponse.status()).toBe(200);
 
-        expect(responseLogin.status()).toBe(200);
+    const articlesResponseJson = await articlesResponse.json();
 
-        const responseLoginJson = await responseLogin.json();
-        const token = responseLoginJson.user.token;
-        
-        //note: hardcoded value, edit before running tests
-        const articleTitle = 'NOVI-article-title-1779265681749-53475';
+    const articleSlug = articlesResponseJson.articles[0].slug;
 
-        const response = await request.delete('https://conduit-api.bondaracademy.com/api/articles/' + articleTitle, {
-            headers: {
-                'Authorization': `Token ${token}`
-            }
-        })
+    const deleteArticleResponse = await request.delete(
+      `articles/${articleSlug}`,
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      }
+    );
 
-        expect(response.status()).toBe(204);
-    })
-})
+    expect(deleteArticleResponse.status()).toBe(204);
+  });
+});
