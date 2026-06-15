@@ -11,8 +11,11 @@ setup('authenticate', async ({ page }) => {
 
     await page.getByRole('textbox', { name: 'Email' }).fill(email);
     await page.getByRole('textbox', { name: 'Password' }).fill(password);
+    
 
     await page.getByRole('button', { name: 'Sign in' }).click();
+    console.log(process.env.TEST_EMAIL);
+    console.log(process.env.TEST_PASSWORD);
 
     await expect(
         page.getByRole('link', { name: 'New Article' })

@@ -1,7 +1,7 @@
 import test, { expect } from "@playwright/test";
 
 test.describe('Register API Tests', () => { 
-    test('User should sign up successfully via API', async ({ request }) => {
+    test('@smoke @regression @api User should sign up successfully via API', async ({ request }) => {
         const uniqueId = Date.now();
 
         const username = `user${uniqueId}`;

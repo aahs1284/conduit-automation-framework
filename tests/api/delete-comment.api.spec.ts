@@ -3,9 +3,11 @@ import commentData from '../../test-data/comment.json';
 
 test.describe('Delete comment - API Tests', () => {
 
-    test('User can delete comment from article', async ({ request, token }) => {
+    test('@ui @regression @smoke User can delete comment from article', async ({ request, token }) => {
 
-        const articlesResponse = await request.get('/articles');
+        const articlesResponse = await test.step('Get available articles', async () => {
+            return await request.get('/articles');
+        });
 
         expect(articlesResponse.status()).toBe(200);
 
@@ -20,19 +22,21 @@ test.describe('Delete comment - API Tests', () => {
         const commentBody =
             `${commentData.apiCommentPrefix} ${Date.now()}`;
 
-        const createCommentResponse = await request.post(
-            `/articles/${myFirstArticlePath}/comments`,
-            {
-                headers: {
-                    Authorization: `Token ${token}`
-                },
-                data: {
-                    comment: {
-                        body: commentBody
+        const createCommentResponse = await test.step('Create comment on article', async () => {
+            return await request.post(
+                `/articles/${myFirstArticlePath}/comments`,
+                {
+                    headers: {
+                        Authorization: `Token ${token}`
+                    },
+                    data: {
+                        comment: {
+                            body: commentBody
+                        }
                     }
                 }
-            }
-        );
+            );
+        });
 
         expect(createCommentResponse.status()).toBe(200);
 
@@ -45,15 +49,19 @@ test.describe('Delete comment - API Tests', () => {
         const commentId =
             createCommentResponseJson.comment.id;
 
-        const deleteCommentResponse = await request.delete(
-            `/articles/${myFirstArticlePath}/comments/${commentId}`,
-            {
-                headers: {
-                    Authorization: `Token ${token}`
+        const deleteCommentResponse = await test.step('Delete created comment', async () => {
+            return await request.delete(
+                `/articles/${myFirstArticlePath}/comments/${commentId}`,
+                {
+                    headers: {
+                        Authorization: `Token ${token}`
+                    }
                 }
-            }
-        );
+            );
+        });
 
-        expect(deleteCommentResponse.status()).toBe(200);
+        await test.step('Verify comment is successfully deleted', async () => {
+            expect(deleteCommentResponse.status()).toBe(200);
+        });
     });
 });

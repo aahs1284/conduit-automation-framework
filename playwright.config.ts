@@ -1,7 +1,11 @@
 import { defineConfig } from '@playwright/test';
 import dotenv from 'dotenv';
 
-dotenv.config();
+const env = process.env.ENV || 'dev';
+
+dotenv.config({
+    path: `.env.${env}`
+});
 
 export default defineConfig({
     testDir: './tests',
@@ -18,14 +22,14 @@ export default defineConfig({
             name: 'setup',
             testMatch: /.*\.setup\.ts/,
             use: {
-                baseURL: 'https://conduit.bondaracademy.com/'
+                baseURL: process.env.UI_URL
             }
         },
         {
             name: 'ui',
             testMatch: /.*\.ui\.spec\.ts/,
             use: {
-                baseURL: 'https://conduit.bondaracademy.com/',
+                baseURL: process.env.UI_URL,
                 storageState: '.auth/user.json'
             },
             dependencies: ['setup']
@@ -34,12 +38,13 @@ export default defineConfig({
             name: 'api',
             testMatch: /.*\.api\.spec\.ts/,
             use: {
-                baseURL: 'https://conduit-api.bondaracademy.com/api/'
+                baseURL: process.env.API_URL
             }
         }
     ],
 
     reporter: [
-        ['html']
+        ['html'],
+        ['allure-playwright']
     ]
 });

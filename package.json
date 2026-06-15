@@ -8,10 +8,21 @@
   },
   "scripts": {
     "test": "playwright test",
-    "test:smoke": "playwright test tests/smoke",
+    "test:dev": "cross-env ENV=dev playwright test",
+    "test:test": "cross-env ENV=test playwright test",
+    "test:smoke:dev": "cross-env ENV=dev playwright test --grep \"@smoke\"",
+    "test:sanity:dev": "cross-env ENV=dev playwright test --grep \"@sanity\"",
+    "test:regression:dev": "cross-env ENV=dev playwright test --grep \"@regression\"",
+    "test:smoke:test": "cross-env ENV=test playwright test --grep \"@smoke\"",
+    "test:sanity:test": "cross-env ENV=test playwright test --grep \"@sanity\"",
+    "test:regression:test": "cross-env ENV=test playwright test --grep \"@regression\"",
     "test:api": "playwright test tests/api",
     "test:ui": "playwright test tests/ui",
-    "test:all:ordered": "npm run test:smoke && npm run test:api && npm run test:ui"
+    "test:api:dev": "cross-env ENV=dev playwright test --project=api",
+    "test:ui:dev": "cross-env ENV=dev playwright test --project=ui",
+    "test:api:test": "cross-env ENV=test playwright test --project=api",
+    "test:ui:test": "cross-env ENV=test playwright test --project=ui",
+    "test:all:ordered": "npm run test:smoke:dev && npm run test:api:dev && npm run test:ui:dev"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +30,9 @@
   "devDependencies": {
     "@playwright/test": "^1.60.0",
     "@types/node": "^25.9.1",
+    "allure-commandline": "^2.42.1",
+    "allure-playwright": "^3.10.0",
+    "cross-env": "^10.1.0",
     "dotenv": "^17.4.2",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3"

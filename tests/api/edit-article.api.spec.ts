@@ -2,22 +2,24 @@ import { test, expect } from '../../fixtures/api.fixtures';
 import articleData from '../../test-data/article.json';
 
 test.describe('Edit article - API Tests', () => {
-  test('User can edit an article', async ({ request, token }) => {
+  test('@smoke @regression @api User can edit an article', async ({ request, token }) => {
 
     const articleTitle = 'article title ' + Date.now();
 
-    const createArticleResponse = await request.post('articles', {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-      data: {
-        article: {
-          title: articleTitle,
-          description: articleData.apiDescription,
-          body: articleData.apiBody,
-          tags: [articleData.tag],
+    const createArticleResponse = await test.step('Create a new article', async () => {
+      return await request.post('articles', {
+        headers: {
+          Authorization: `Token ${token}`,
         },
-      },
+        data: {
+          article: {
+            title: articleTitle,
+            description: articleData.apiDescription,
+            body: articleData.apiBody,
+            tags: [articleData.tag],
+          },
+        },
+      });
     });
 
     expect(createArticleResponse.status()).toBe(201);
@@ -27,7 +29,8 @@ test.describe('Edit article - API Tests', () => {
 
     const updatedArticleTitle = 'NOVI article title ' + Date.now();
 
-    const editArticleResponse = await request.put(`articles/${createdArticleSlug}`, {
+    const editArticleResponse = await test.step('Edit the created article', async () => {
+      return await request.put(`articles/${createdArticleSlug}`, {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -38,20 +41,22 @@ test.describe('Edit article - API Tests', () => {
             body: articleData.updatedBody,
           },
         },
-      }
-    );
+      });
+    });
 
-    expect(editArticleResponse.status()).toBe(200);
+    await test.step('Verify article is successfully updated', async () => {
+      expect(editArticleResponse.status()).toBe(200);
 
-    const editArticleResponseJson = await editArticleResponse.json();
+      const editArticleResponseJson = await editArticleResponse.json();
 
-    expect(editArticleResponseJson.article.title)
-      .toBe(updatedArticleTitle);
+      expect(editArticleResponseJson.article.title)
+        .toBe(updatedArticleTitle);
 
-    expect(editArticleResponseJson.article.description)
-      .toBe(articleData.updatedDescription);
+      expect(editArticleResponseJson.article.description)
+        .toBe(articleData.updatedDescription);
 
-    expect(editArticleResponseJson.article.body)
-      .toBe(articleData.updatedBody);
+      expect(editArticleResponseJson.article.body)
+        .toBe(articleData.updatedBody);
+    });
   });
 });

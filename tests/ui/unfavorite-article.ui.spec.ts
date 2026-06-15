@@ -2,17 +2,31 @@ import { test } from '../../fixtures/pages.fixture';
 
 test.describe('Unfavorite article - UI Tests', () => {
 
-    test('User should be able to remove article from favorites', async ({ page, articlePage }) => {
-        await page.goto('/');
-        
-        await articlePage.favoriteArticle();
-        await articlePage.verifyArticleFavorited();
+    test('@ui @regression User should be able to remove article from favorites', async ({ page, articlePage }) => {
 
-        await articlePage.unfavoriteArticle();
+        await test.step('Open home page', async () => {
+            await page.goto('/');
+        });
 
-        await page.locator('body').click();
+        await test.step('Add article to favorites', async () => {
+            await articlePage.favoriteArticle();
+        });
 
-        await articlePage.verifyArticleUnfavorited();
+        await test.step('Verify article is added to favorites', async () => {
+            await articlePage.verifyArticleFavorited();
+        });
+
+        await test.step('Remove article from favorites', async () => {
+            await articlePage.unfavoriteArticle();
+        });
+
+        await test.step('Refresh article state', async () => {
+            await page.locator('body').click();
+        });
+
+        await test.step('Verify article is removed from favorites', async () => {
+            await articlePage.verifyArticleUnfavorited();
+        });
 
     });
 

@@ -3,7 +3,7 @@ import { test, expect } from '../../fixtures/pages.fixture';
 test.describe('SignUp UI Tests', () => {
   test.use({ storageState: { cookies: [], origins: [] } });
 
-  test('User should sign up successfully', async ({ registerPage, page }) => {
+  test('@smoke @regression User should sign up successfully', async ({ registerPage, page }) => {
     await page.goto('/register');
 
     const username = 'user' + Date.now();

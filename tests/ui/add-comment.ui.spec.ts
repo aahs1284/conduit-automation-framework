@@ -4,9 +4,11 @@ import commentData from '../../test-data/comment.json';
 
 test.describe('Comment article - UI Tests', () => {
 
-    test('User should be able to add comment on article', async ({ commentPage, page }) => {
+    test('@smoke @regression @ui User should be able to add comment on article', async ({ commentPage, page }) => {
 
-        await page.goto('/');
+        await test.step('Open home page', async () => {
+            await page.goto('/');
+        });
 
         const myFirstArticle = page.locator('div.article-preview').filter({
             has: page.locator('.author', {
@@ -14,12 +16,19 @@ test.describe('Comment article - UI Tests', () => {
             })
         }).first();
 
-        await myFirstArticle.locator('h1').click();
+        await test.step('Open article for commenting', async () => {
+            await myFirstArticle.locator('h1').click();
+        });
 
         const comment = `${commentData.commentPrefix} ${Date.now()}`;
 
-        await commentPage.addComment(comment);
-        await commentPage.verifyComment(comment);
+        await test.step('Add comment to article', async () => {
+            await commentPage.addComment(comment);
+        });
+
+        await test.step('Verify comment is successfully added', async () => {
+            await commentPage.verifyComment(comment);
+        });
     });
 
 });
